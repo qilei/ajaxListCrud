@@ -19,7 +19,7 @@
 		<servlet.version>2.5</servlet.version>
 
 		<spring-framework.version>3.2.4.RELEASE</spring-framework.version>
-		
+
 		<!-- Web dependencies -->
 		<webjars-bootstrap.version>2.3.0</webjars-bootstrap.version>
 		<webjars-jquery-ui.version>1.9.2</webjars-jquery-ui.version>
@@ -65,6 +65,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${jstl.version}</version>
@@ -81,7 +87,7 @@
 			<version>${jsp.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- Webjars (static dependencies distributed as JAR files) -->
 		<dependency>
 			<groupId>org.webjars</groupId>
@@ -98,7 +104,7 @@
 			<artifactId>jquery</artifactId>
 			<version>${webjars-jquery.version}</version>
 		</dependency>
-		
+
 		<!-- Dandelion -->
 		<dependency>
 			<groupId>com.github.dandelion</groupId>

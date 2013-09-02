@@ -6,8 +6,12 @@
 <html>
 <jsp:include page="../fragments/headTag.jsp"/>
 <body>
-	<datatables:table id="contactTable" data="${contacts }">
+<c:url var="datasource" value="/contact/list" />
+	<datatables:table id="contactTable" url="${datasource }" cdn="true" row="contact">
 		<datatables:column title="姓名" property="name"></datatables:column>
+		<datatables:column title="电话" property="phone"></datatables:column>
+		<datatables:column title="邮箱" property="email"></datatables:column>
+		<datatables:column title="地址" property="addr"></datatables:column>
 	</datatables:table>
 </body>
 </html>
