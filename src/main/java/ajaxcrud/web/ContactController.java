@@ -17,7 +17,6 @@ import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
 import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 
 @Controller
-@RequestMapping("contact")
 public class ContactController {
 
 	@Autowired
@@ -33,7 +32,7 @@ public class ContactController {
 		return "list";
 	}
 
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	@RequestMapping(value = "contact/list", method = RequestMethod.GET)
 	@ResponseBody
 	public DatatablesResponse<Contact> findAll(HttpServletRequest request, Model model) {
 		DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
