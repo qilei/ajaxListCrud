@@ -1,6 +1,6 @@
 package ajaxcrud.web;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ajaxcrud.domain.Contact;
 import ajaxcrud.service.ContactService;
 
+import com.github.dandelion.datatables.core.ajax.DataSet;
+import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
+import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
+
 @Controller
 @RequestMapping("contact")
 public class ContactController {
@@ -20,16 +24,20 @@ public class ContactController {
 	private ContactService contactService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String list(Model model) {
-		List<Contact> contacts = contactService.getAll();
-		model.addAttribute("contacts", contacts);
+	public String list(HttpServletRequest request, Model model) {
+		// DatatablesCriterias criterias =
+		// DatatablesCriterias.getFromRequest(request);
+		// DataSet<Contact> contacts =
+		// contactService.findContactWithDatatablesCriterias(criterias);
+		// model.addAttribute("contacts", contacts.getRows());
 		return "list";
 	}
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Contact> findAll(Model model) {
-		List<Contact> contacts = contactService.getAll();
-		return contacts;
+	public DatatablesResponse<Contact> findAll(HttpServletRequest request, Model model) {
+		DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
+		DataSet<Contact> contacts = contactService.findContactWithDatatablesCriterias(criterias);
+		return DatatablesResponse.build(contacts, criterias);
 	}
 }

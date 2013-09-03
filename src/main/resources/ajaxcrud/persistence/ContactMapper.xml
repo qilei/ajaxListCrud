@@ -6,7 +6,12 @@
 
   <cache />
 
-  <select id="getAll" resultType="Contact">
+  <!-- <select id="getAll" resultType="Contact">
+  	select * 
+  	from contact
+  </select> -->
+
+  <select id="selectList" resultType="Contact">
   	select * 
   	from contact
   </select>
