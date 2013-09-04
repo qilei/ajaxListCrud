@@ -1,5 +1,7 @@
 package ajaxcrud.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ajaxcrud.common.AjaxResponseEntity;
 import ajaxcrud.domain.Contact;
 import ajaxcrud.service.ContactService;
-
-import com.github.dandelion.datatables.core.ajax.DataSet;
-import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
-import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 
 @Controller
 public class ContactController {
@@ -32,11 +31,27 @@ public class ContactController {
 		return "list";
 	}
 
-	@RequestMapping(value = "contact/list", method = RequestMethod.GET)
+	// @RequestMapping(value = "contact/list", method = RequestMethod.GET)
+	// @ResponseBody
+	// public DatatablesResponse<Contact> findAll(HttpServletRequest request,
+	// Model model) {
+	// DatatablesCriterias criterias =
+	// DatatablesCriterias.getFromRequest(request);
+	// DataSet<Contact> contacts =
+	// contactService.findContactWithDatatablesCriterias(criterias);
+	// return DatatablesResponse.build(contacts, criterias);
+	// }
+
+	@RequestMapping(value = "/contact/list")
 	@ResponseBody
-	public DatatablesResponse<Contact> findAll(HttpServletRequest request, Model model) {
-		DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-		DataSet<Contact> contacts = contactService.findContactWithDatatablesCriterias(criterias);
-		return DatatablesResponse.build(contacts, criterias);
+	public AjaxResponseEntity<Object> findAll(HttpServletRequest request, Model model, Integer jtStartIndex,
+			Integer jtPageSize) {
+		List<Contact> contacts = contactService.getContacts(jtStartIndex, jtPageSize);
+		int count = contactService.getContactsCount();
+		AjaxResponseEntity<Object> responseEntity = new AjaxResponseEntity<Object>();
+		responseEntity.setResult("OK");
+		responseEntity.setRecords(contacts);
+		responseEntity.setTotalRecordCount(count);
+		return responseEntity;
 	}
 }

@@ -5,14 +5,12 @@
 <mapper namespace="ajaxcrud.persistence.ContactMapper">
 
   <cache />
-
-  <!-- <select id="getAll" resultType="Contact">
-  	select * 
-  	from contact
-  </select> -->
-
-  <select id="selectList" resultType="Contact">
-  	select * 
-  	from contact
+  
+  <select id="getContacts" parameterType="map" resultType="Contact">
+  	select limit #{startIndex} #{recordCount} * from contact
+  </select>
+  
+  <select id="getContactsCount" resultType="int">
+  	select count(*) from contact
   </select>
 </mapper>  
