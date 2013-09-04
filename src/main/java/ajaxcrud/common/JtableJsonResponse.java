@@ -2,7 +2,7 @@ package ajaxcrud.common;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class AjaxResponseEntity<T> {
+public class JtableJsonResponse<T> {
 	@JsonProperty("Result")
 	private String result;
 

@@ -7,20 +7,6 @@
 <jsp:include page="../fragments/headTag.jsp"/>
 <body>
 	<c:url var="datasource" value="/contact/list" />
-	<%-- 
-	<datatables:table id="contactTable" url="${datasource }" cdn="true" row="contact" serverSide="true" processing="true" paginationType="full_numbers" sort="false" pipelining="true" pipeSize="1">
-		<datatables:column title="姓名" property="name"></datatables:column>
-		<datatables:column title="电话" property="phone"></datatables:column>
-		<datatables:column title="邮箱" property="email"></datatables:column>
-		<datatables:column title="地址" property="addr"></datatables:column>
-	</datatables:table> --%>
-	<%-- <datatables:table id="contactTable" data="${contacts }" cdn="true" row="contact" serverSide="true" processing="true">
-		<datatables:column title="姓名" property="name"></datatables:column>
-		<datatables:column title="电话" property="phone"></datatables:column>
-		<datatables:column title="邮箱" property="email"></datatables:column>
-		<datatables:column title="地址" property="addr"></datatables:column>
-	</datatables:table> --%>
-	
 	<div id="ContactTableContainer"></div>
 	<script type="text/javascript">
     $(document).ready(function () {
