@@ -6,14 +6,19 @@
 <html>
 <jsp:include page="../fragments/headTag.jsp"/>
 <body>
-	<c:url var="datasource" value="/contact/list" />
+	<c:url var="listUrl" value="/contact/list" />
+	<c:url var="addUrl" value="/contact/add" />
+	<div>
+	<button id="btnAdd">新增</button>
+	</div>
 	<div id="ContactTableContainer"></div>
+	<div id="dialog" title="通讯录编辑">
 	<script type="text/javascript">
     $(document).ready(function () {
         $('#ContactTableContainer').jtable({
-            title: 'Table of contact',
+            title: 'Table of contact',	
             actions: {
-                listAction: '${datasource}',
+                listAction: '${listUrl}',
             },
             paging: true,
             pageSize: 5,
@@ -41,7 +46,16 @@
             }
         });
         $('#ContactTableContainer').jtable('load');
+		
+		$("#btnAdd").crud({
+			action:"create",
+			url:"${addUrl}",
+			rowInserted:function(){
+				$('#ContactTableContainer').jtable('reload');
+			}
+		});
     });
+
 </script>
 </body>
 </html>

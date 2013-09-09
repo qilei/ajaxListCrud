@@ -13,4 +13,13 @@
   <select id="getContactsCount" resultType="int">
   	select count(*) from contact
   </select>
+
+  <insert id="insertContact" parameterType="Contact">
+    INSERT INTO contact
+      (id, name, phone, email, addr)
+    VALUES
+      (#{id}, #{name}, #{phone}, #{email}, #{addr})
+  </insert>
+  
+  
 </mapper>  

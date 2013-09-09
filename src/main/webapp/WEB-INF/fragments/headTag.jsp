@@ -21,11 +21,14 @@
     <spring:url value="/webjars/jquery-ui/1.9.2/css/smoothness/jquery-ui-1.9.2.custom.css" var="jQueryUiCss"/>
     <link href="${jQueryUiCss}" rel="stylesheet"></link>
 
-    <spring:url value="/resources/jtable.2.3.0/themes/metro/blue/jtable.min.css" var="jtableCss"/>
+    <spring:url value="/resources/jtable.2.3.0/themes/lightcolor/gray/jtable.css" var="jtableCss"/>
     <link href="${jtableCss}" rel="stylesheet"/>
     
 	<spring:url value="/resources/jtable.2.3.0/jquery.jtable.min.js" var="jtable"/>
     <script src="${jtable}"></script>
+    
+	<spring:url value="/resources/crud/jquery.crudnew.js" var="crud"/>
+    <script src="${crud}"></script>
 </head>
 
 

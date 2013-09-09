@@ -11,4 +11,6 @@ public interface ContactMapper {
 
 	public Integer getContactsCount();
 
+	public void insertContact(Contact contact);
+
 }
