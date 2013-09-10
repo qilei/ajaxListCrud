@@ -6,11 +6,12 @@
 		options : {
 			action : null,
 			url : null,
-			dialogWidth : 800,
-			dialogHeight : 600,
+//			dialogWidth : 800,
+//			dialogHeight : 600,
+			validationInfo:null,
 
 			// callbacks
-			rowInserted : function (event, data) { }
+			recordAdded : function (event, data) { }
 		},
 
 		/************************************************************************
@@ -26,20 +27,10 @@
 		/* Overrides base method to do create-specific constructions.
 		 *************************************************************************/
 		_create : function() {
-			var btnAdd=this.element;
 			var self = this;
 			self._createAddRecordDialogDiv();
-			$(btnAdd).bind("click", function() {
-				self._$addRecordDiv.dialog({
-					open:function(event){
-						self._$addRecordDiv.load(self.options.url,function(){
-							var $addRecordForm = self._$addRecordDiv.find('form');
-							self._saveAddRecordForm($addRecordForm);
-						});
-					}
-				});
-				self._$addRecordDiv.dialog("open");
-				
+			self.element.click(function(e){
+				self._showAddRecordForm();
 			});
 		},
 
@@ -61,36 +52,46 @@
 				autoOpen : false,
 				width : 'auto',
 				minWidth : '300',
+//				width:self.options.dialogWidth,
+//				height:self.options.dialogHeight,
 				modal : true,
-				buttons : [ { //Cancel button
+				buttons : [ { //Save button
+					id : 'AddRecordDialogSaveButton',
+					text : "确认",
+					click : function() {
+						var $addRecordForm = self._$addRecordDiv.find('form');
+						$addRecordForm.submit();
+					}
+				},{ //Cancel button
 					text : "取消",
 					click : function() {
 						self._$addRecordDiv.dialog('close');
 					}
-				}, { //Save button
-					id : 'AddRecordDialogSaveButton',
-					text : "确认",
-					click : function() {
-						var $saveButton = $('#AddRecordDialogSaveButton');
-						var $addRecordForm = self._$addRecordDiv.find('form');
-
-						//                              if (self._trigger("formSubmitting", null, { form: $addRecordForm, formType: 'create' }) != false) {
-						//                                  self._setEnabledOfDialogButton($saveButton, false, self.options.messages.saving);
-//						self._saveAddRecordForm($addRecordForm, $saveButton);
-						//                              }
-						$addRecordForm.submit();
-					}
-				} ],
+				}],
 				close : function() {
-					var $addRecordForm = self._$addRecordDiv.find('form')
-							.first();
-//					var $saveButton = $('#AddRecordDialogSaveButton');
-					//                  self._trigger("formClosed", null, { form: $addRecordForm, formType: 'create' });
-					//                  self._setEnabledOfDialogButton($saveButton, true, self.options.messages.save);
+					var $addRecordForm = self._$addRecordDiv.find('form').first();
 					$addRecordForm.remove();
 				}
 			});
 		},
+		
+        /* Shows add new record dialog form.
+        *************************************************************************/
+        _showAddRecordForm: function () {
+            var self = this;
+			self._$addRecordDiv.dialog({
+				open:function(event){
+					self._$addRecordDiv.load(self.options.url,function(){
+						var $addRecordForm = self._$addRecordDiv.find('form');
+						if(self.options.validationInfo){
+							$addRecordForm.validate(self.options.validationInfo);
+						}
+						self._saveAddRecordForm($addRecordForm);
+					});
+				}
+			});
+			self._$addRecordDiv.dialog("open");
+        },
 
         /* Saves new added record to the server and updates table.
         *************************************************************************/
@@ -99,7 +100,7 @@
             
             $addRecordForm.unbind("submit");
             $addRecordForm.bind("submit",function(e) {
-				//if ($form.valid()) {
+				if ($addRecordForm.valid()) {
 					$.ajax({
 						type : "post",
 						url : $addRecordForm.attr("action"),
@@ -109,7 +110,7 @@
 							$addRecordForm.find('input').removeClass('error');
 							if (data.status === "SUCCESS") {
 								self._$addRecordDiv.dialog("close");
-								self._trigger("rowInserted", null, {});
+								self._trigger("recordAdded", null, {});
 							} else if (data.status === "VALIDATION_FAIL") {
 								for (var i = 0; i < data.entity.length; i++) {
 									var item = data.entity[i];
@@ -122,7 +123,7 @@
 							}
 						}
 					});
-				//}
+				}
 				e.preventDefault();
 				return false;
 			});

@@ -29,6 +29,12 @@
     
 	<spring:url value="/resources/crud/jquery.crudnew.js" var="crud"/>
     <script src="${crud}"></script>
+    
+	<spring:url value="/resources/jquery-plugin/validation/jquery.validate.js" var="jqueryValidation"/>
+    <script src="${jqueryValidation}"></script>
+    
+	<spring:url value="/resources/jquery-plugin/validation/messages_zh.js" var="jqueryValidationMessage"/>
+    <script src="${jqueryValidationMessage}"></script>
 </head>
 
 

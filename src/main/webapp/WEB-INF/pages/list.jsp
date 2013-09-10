@@ -50,8 +50,20 @@
 		$("#btnAdd").crud({
 			action:"create",
 			url:"${addUrl}",
-			rowInserted:function(){
+			dialogWidth:400,
+			dialogHeight:300,
+			recordAdded:function(){
 				$('#ContactTableContainer').jtable('reload');
+			},
+			validationInfo:{
+				rules : {
+					phone : {
+						required : true
+					}
+				},
+				errorPlacement: function(error, element) {
+					element.parent("td").find('.errorMsg').html(error);
+				}
 			}
 		});
     });
