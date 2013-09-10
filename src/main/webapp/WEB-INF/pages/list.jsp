@@ -52,18 +52,26 @@
 			url:"${addUrl}",
 			dialogWidth:400,
 			dialogHeight:300,
+			formCreated:function(event,data){
+				data.form.validate({
+					rules : {
+						phone : {
+							required : true
+						}
+					},
+					errorPlacement: function(error, element) {
+						element.parent("td").find('.errorMsg').html(error);
+					}
+				});
+			},
+			/* formSubmitting:function(event,data){
+				if(!data.form.valid()){
+					event.preventDefault();
+					return false;
+				}
+			}, */
 			recordAdded:function(){
 				$('#ContactTableContainer').jtable('reload');
-			},
-			validationInfo:{
-				rules : {
-					phone : {
-						required : true
-					}
-				},
-				errorPlacement: function(error, element) {
-					element.parent("td").find('.errorMsg').html(error);
-				}
 			}
 		});
     });

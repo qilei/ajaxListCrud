@@ -1,6 +1,6 @@
 (function($) {
 	// the widget definition, where "custom" is the namespace,
-	// "colorize" the widget name
+	// "crud" the widget name
 	$.widget("custom.crud", {
 		// default options
 		options : {
@@ -11,6 +11,8 @@
 			validationInfo:null,
 
 			// callbacks
+			formCreated : function (event,data){},
+			//formSubmitting : function (event,data){},
 			recordAdded : function (event, data) { }
 		},
 
@@ -83,9 +85,7 @@
 				open:function(event){
 					self._$addRecordDiv.load(self.options.url,function(){
 						var $addRecordForm = self._$addRecordDiv.find('form');
-						if(self.options.validationInfo){
-							$addRecordForm.validate(self.options.validationInfo);
-						}
+			            self._trigger("formCreated", null, { form: $addRecordForm, formType: 'create' });
 						self._saveAddRecordForm($addRecordForm);
 					});
 				}
@@ -100,6 +100,7 @@
             
             $addRecordForm.unbind("submit");
             $addRecordForm.bind("submit",function(e) {
+	            self._trigger("formSubmitting", null, { form: $addRecordForm, formType: 'create' });
 				if ($addRecordForm.valid()) {
 					$.ajax({
 						type : "post",
