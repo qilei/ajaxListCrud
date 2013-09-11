@@ -30,9 +30,17 @@ public class ContactService {
 		return contactMapper.getContactsCount();
 	}
 
+	public Contact getContactById(Integer id) {
+		return contactMapper.getContactById(id);
+	}
+
 	public void insertContact(Contact contact) {
 		contact.setId(this.getNextId("contactid"));
 		contactMapper.insertContact(contact);
+	}
+
+	public void updateContact(Contact contact) {
+		contactMapper.updateContact(contact);
 	}
 
 	public int getNextId(String name) {
@@ -45,6 +53,10 @@ public class ContactService {
 		Sequence parameterObject = new Sequence(name, sequence.getNextId() + 1);
 		sequenceMapper.updateSequence(parameterObject);
 		return sequence.getNextId();
+	}
+
+	public void deleteContact(Integer id) {
+		contactMapper.deleteContact(id);
 	}
 
 }

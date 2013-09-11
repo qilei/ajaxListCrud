@@ -11,6 +11,12 @@ public interface ContactMapper {
 
 	public Integer getContactsCount();
 
+	public Contact getContactById(Integer id);
+
 	public void insertContact(Contact contact);
+
+	public void updateContact(Contact contact);
+
+	public void deleteContact(Integer id);
 
 }

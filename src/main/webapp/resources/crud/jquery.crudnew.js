@@ -6,14 +6,14 @@
 		options : {
 			action : null,
 			url : null,
-//			dialogWidth : 800,
-//			dialogHeight : 600,
-			validationInfo:null,
+			data : null,
 
 			// callbacks
+			buttonClicking : function (event,data){},
 			formCreated : function (event,data){},
-			//formSubmitting : function (event,data){},
-			recordAdded : function (event, data) { }
+			formSubmitting : function (event,data){},
+			recordAdded : function (event, data) { },
+			recordDeleted : function (event, data) { }
 		},
 
 		/************************************************************************
@@ -30,10 +30,16 @@
 		 *************************************************************************/
 		_create : function() {
 			var self = this;
-			self._createAddRecordDialogDiv();
-			self.element.click(function(e){
-				self._showAddRecordForm();
-			});
+			if(self.options.action != "delete"){
+				self._createAddRecordDialogDiv();
+				self.element.click(function(e){
+					self._showAddRecordForm();
+				});
+			}else{
+				self.element.click(function(e){
+					self._deleteRecord();
+				});
+			}
 		},
 
 		/* Creates and prepares add new record dialog div
@@ -54,8 +60,6 @@
 				autoOpen : false,
 				width : 'auto',
 				minWidth : '300',
-//				width:self.options.dialogWidth,
-//				height:self.options.dialogHeight,
 				modal : true,
 				buttons : [ { //Save button
 					id : 'AddRecordDialogSaveButton',
@@ -100,8 +104,7 @@
             
             $addRecordForm.unbind("submit");
             $addRecordForm.bind("submit",function(e) {
-	            self._trigger("formSubmitting", null, { form: $addRecordForm, formType: 'create' });
-				if ($addRecordForm.valid()) {
+            	if(self._trigger("formSubmitting", null, { form: $addRecordForm, formType: 'create' }) != false){
 					$.ajax({
 						type : "post",
 						url : $addRecordForm.attr("action"),
@@ -124,10 +127,28 @@
 							}
 						}
 					});
-				}
+            	}
 				e.preventDefault();
 				return false;
 			});
         },
+        _deleteRecord : function(){
+        	var self=this;
+			 if(confirm("您确认要删除吗？")){
+				 $.ajax({
+					 type:"post",
+					 url:self.options.url,
+					 data:self.options.data,
+					 success:function(data){
+						if (data.status === "SUCCESS") {
+							alert("删除成功！");
+						}else {
+							alert("操作失败！" + data.entity);
+						}
+						self._trigger("recordDeleted", null, {});
+					 }
+				 });
+			 }
+        }
 	});
 })(jQuery);

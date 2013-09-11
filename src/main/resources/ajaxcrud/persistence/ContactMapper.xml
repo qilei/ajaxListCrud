@@ -13,6 +13,10 @@
   <select id="getContactsCount" resultType="int">
   	select count(*) from contact
   </select>
+  
+  <select id="getContactById" parameterType="int" resultType="Contact">
+  	select * from contact where id=#{id}
+  </select>
 
   <insert id="insertContact" parameterType="Contact">
     INSERT INTO contact
@@ -20,6 +24,18 @@
     VALUES
       (#{id}, #{name}, #{phone}, #{email}, #{addr})
   </insert>
+
+  <update id="updateContact" parameterType="Contact">
+  	update contact set
+  		name=#{name},
+  		phone=#{phone},
+  		email=#{email},
+  		addr=#{addr}
+ 	where id=#{id}
+  </update>
   
+  <delete id="deleteContact" parameterType="int">
+  	delete from contact where id=#{id}
+  </delete>
   
 </mapper>  

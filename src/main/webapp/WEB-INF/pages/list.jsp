@@ -8,20 +8,36 @@
 <body>
 	<c:url var="listUrl" value="/contact/list" />
 	<c:url var="addUrl" value="/contact/add" />
+	<c:url var="editUrl" value="/contact/edit" />
+	<c:url var="delUrl" value="/contact/delete" />
 	<div>
 	<button id="btnAdd">新增</button>
+	<button id="btnEdit" disabled="disabled">修改</button>
+	<button id="btnDel" disabled="disabled">删除</button>
 	</div>
 	<div id="ContactTableContainer"></div>
 	<div id="dialog" title="通讯录编辑">
 	<script type="text/javascript">
+	var validationInfo={
+		rules : {
+			phone : {
+				required : true
+			}
+		},
+		errorPlacement: function(error, element) {
+			element.parent("td").find('.errorMsg').html(error);
+		}
+	};
     $(document).ready(function () {
         $('#ContactTableContainer').jtable({
-            title: 'Table of contact',	
+            title: '通讯录',	
             actions: {
                 listAction: '${listUrl}',
             },
             paging: true,
             pageSize: 5,
+            selecting: true,
+            selectingCheckboxes: true,
             fields: {
             	id: {
                     key: true,
@@ -43,6 +59,17 @@
                     title: '地址',
                     width: '20%'
                 }
+            },
+            selectionChanged: function () {
+                var $selectedRows = $('#ContactTableContainer').jtable('selectedRows');
+ 
+                if ($selectedRows.length > 0) {
+                	initBtnEdit();
+                	initBtnDel();
+                	$("#btnEdit,#btnDel").attr("disabled",false);
+                }else{
+                	$("#btnEdit,#btnDel").attr("disabled",true);
+                }
             }
         });
         $('#ContactTableContainer').jtable('load');
@@ -53,28 +80,49 @@
 			dialogWidth:400,
 			dialogHeight:300,
 			formCreated:function(event,data){
-				data.form.validate({
-					rules : {
-						phone : {
-							required : true
-						}
-					},
-					errorPlacement: function(error, element) {
-						element.parent("td").find('.errorMsg').html(error);
-					}
-				});
+				data.form.validate(validationInfo);
 			},
-			/* formSubmitting:function(event,data){
+			formSubmitting:function(event,data){
 				if(!data.form.valid()){
 					event.preventDefault();
 					return false;
 				}
-			}, */
+			},
 			recordAdded:function(){
 				$('#ContactTableContainer').jtable('reload');
 			}
 		});
     });
+    
+    function initBtnEdit(){
+		$("#btnEdit").crud({
+			action:"edit",
+			url:"${editUrl}"+"?id="+$('#ContactTableContainer').jtable('selectedRows').first().data("record").id,
+			formCreated:function(event,data){
+				data.form.validate(validationInfo);
+			},
+			formSubmitting:function(event,data){
+				if(!data.form.valid()){
+					event.preventDefault();
+					return false;
+				}
+			},
+			recordAdded:function(){
+				$('#ContactTableContainer').jtable('reload');
+			}
+		});
+    }
+    
+    function initBtnDel(){
+		$("#btnDel").crud({
+			action:"delete",
+			url:"${delUrl}",
+			data:{id:$('#ContactTableContainer').jtable('selectedRows').first().data("record").id},
+			recordDeleted:function(){
+				$('#ContactTableContainer').jtable('reload');
+			}
+		});
+    }
 
 </script>
 </body>
