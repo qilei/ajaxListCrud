@@ -77,8 +77,7 @@
 		$("#btnAdd").crud({
 			action:"create",
 			url:"${addUrl}",
-			dialogWidth:400,
-			dialogHeight:300,
+			messages:{title:"新增联系人"},
 			formCreated:function(event,data){
 				data.form.validate(validationInfo);
 			},

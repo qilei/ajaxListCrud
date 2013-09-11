@@ -9,11 +9,15 @@
 			data : null,
 
 			// callbacks
-			buttonClicking : function (event,data){},
 			formCreated : function (event,data){},
 			formSubmitting : function (event,data){},
 			recordAdded : function (event, data) { },
-			recordDeleted : function (event, data) { }
+			recordDeleted : function (event, data) { },
+			
+            //Localization
+            messages: {
+                title: '编辑'
+            }
 		},
 
 		/************************************************************************
@@ -61,6 +65,7 @@
 				width : 'auto',
 				minWidth : '300',
 				modal : true,
+				title : self.options.messages.title,
 				buttons : [ { //Save button
 					id : 'AddRecordDialogSaveButton',
 					text : "确认",
