@@ -21,19 +21,19 @@
     <spring:url value="/webjars/jquery-ui/1.9.2/css/smoothness/jquery-ui-1.9.2.custom.css" var="jQueryUiCss"/>
     <link href="${jQueryUiCss}" rel="stylesheet"></link>
 
-    <spring:url value="/resources/jtable.2.3.0/themes/lightcolor/gray/jtable.css" var="jtableCss"/>
+    <spring:url value="/resources/js/jquery-plugin/jtable.2.3.0/themes/lightcolor/gray/jtable.css" var="jtableCss"/>
     <link href="${jtableCss}" rel="stylesheet"/>
     
-	<spring:url value="/resources/jtable.2.3.0/jquery.jtable.min.js" var="jtable"/>
+	<spring:url value="/resources/js/jquery-plugin/jtable.2.3.0/jquery.jtable.min.js" var="jtable"/>
     <script src="${jtable}"></script>
     
-	<spring:url value="/resources/crud/jquery.crudnew.js" var="crud"/>
+	<spring:url value="/resources/js/jquery-plugin/crud/jquery.crud.js" var="crud"/>
     <script src="${crud}"></script>
     
-	<spring:url value="/resources/jquery-plugin/validation/jquery.validate.js" var="jqueryValidation"/>
+	<spring:url value="/resources/js/jquery-plugin/validation/jquery.validate.js" var="jqueryValidation"/>
     <script src="${jqueryValidation}"></script>
     
-	<spring:url value="/resources/jquery-plugin/validation/messages_zh.js" var="jqueryValidationMessage"/>
+	<spring:url value="/resources/js/jquery-plugin/validation/messages_zh.js" var="jqueryValidationMessage"/>
     <script src="${jqueryValidationMessage}"></script>
 </head>
 

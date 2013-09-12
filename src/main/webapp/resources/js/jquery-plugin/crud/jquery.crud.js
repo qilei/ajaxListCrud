@@ -11,8 +11,8 @@
 			// callbacks
 			formCreated : function (event,data){},
 			formSubmitting : function (event,data){},
-			recordAdded : function (event, data) { },
-			recordDeleted : function (event, data) { },
+			recordAdded : function (event, data) {},
+			recordDeleted : function (event, data) {},
 			
             //Localization
             messages: {
@@ -94,8 +94,8 @@
 				open:function(event){
 					self._$addRecordDiv.load(self.options.url,function(){
 						var $addRecordForm = self._$addRecordDiv.find('form');
-			            self._trigger("formCreated", null, { form: $addRecordForm, formType: 'create' });
-						self._saveAddRecordForm($addRecordForm);
+			            self._trigger("formCreated", null, { form: $addRecordForm});
+			            self._saveAddRecordForm($addRecordForm);
 					});
 				}
 			});
@@ -109,7 +109,7 @@
             
             $addRecordForm.unbind("submit");
             $addRecordForm.bind("submit",function(e) {
-            	if(self._trigger("formSubmitting", null, { form: $addRecordForm, formType: 'create' }) != false){
+            	if(self._trigger("formSubmitting", null, { form: $addRecordForm}) != false){
 					$.ajax({
 						type : "post",
 						url : $addRecordForm.attr("action"),
@@ -119,7 +119,7 @@
 							$addRecordForm.find('input').removeClass('error');
 							if (data.status === "SUCCESS") {
 								self._$addRecordDiv.dialog("close");
-								self._trigger("recordAdded", null, {});
+								self._trigger("recordAdded");
 							} else if (data.status === "VALIDATION_FAIL") {
 								for (var i = 0; i < data.entity.length; i++) {
 									var item = data.entity[i];
@@ -150,7 +150,7 @@
 						}else {
 							alert("操作失败！" + data.entity);
 						}
-						self._trigger("recordDeleted", null, {});
+						self._trigger("recordDeleted");
 					 }
 				 });
 			 }
