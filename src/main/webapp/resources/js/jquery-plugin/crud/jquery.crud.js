@@ -25,6 +25,7 @@
 		 *************************************************************************/
 
 		_$addRecordDiv : null, //Reference to the adding new record dialog div (jQuery object)
+		_$showRecordDiv : null,
 
 		/************************************************************************
 		 * CONSTRUCTOR                                                           *
@@ -34,15 +35,21 @@
 		 *************************************************************************/
 		_create : function() {
 			var self = this;
-			if(self.options.action != "delete"){
+			if(self.options.action == "create" || self.options.action == "edit"){
 				self._createAddRecordDialogDiv();
 				self.element.click(function(e){
 					self._showAddRecordForm();
 					e.preventDefault();
 				});
-			}else{
+			}else if(self.options.action == "delete"){
 				self.element.click(function(e){
 					self._deleteRecord();
+					e.preventDefault();
+				});
+			}else if(self.options.action == "show"){
+				self._createShowRecordDialogDiv();
+				self.element.click(function(e){
+					self._showViewRecordForm();
 					e.preventDefault();
 				});
 			}
@@ -87,6 +94,40 @@
 				}
 			});
 		},
+
+		/* Creates and prepares add show record dialog div
+		 *************************************************************************/
+		_createShowRecordDialogDiv : function() {
+			var self = this;
+
+			//Check if createAction is supplied
+			if (!self.options.action) {
+				return;
+			}
+
+			//Create a div for dialog and add to container element
+			self._$showRecordDiv = $('<div />').appendTo($("body"));
+
+			//Prepare dialog
+			self._$showRecordDiv.dialog({
+				autoOpen : false,
+				width : 'auto',
+				minWidth : '300',
+				modal : true,
+				title : "查看",
+				buttons : [ { //Save button
+					id : 'ShowRecordDialogCloseButton',
+					text : "关闭",
+					click : function() {
+						self._$showRecordDiv.dialog('close');
+					}
+				}],
+				close : function() {
+					var $showRecordForm = self._$showRecordDiv.find('form').first();
+					$showRecordForm.remove();
+				}
+			});
+		},
 		
         /* Shows add new record dialog form.
         *************************************************************************/
@@ -102,6 +143,21 @@
 				}
 			});
 			self._$addRecordDiv.dialog("open");
+        },
+		
+        /* Shows view record dialog form.
+        *************************************************************************/
+        _showViewRecordForm: function () {
+            var self = this;
+			self._$showRecordDiv.dialog({
+				open:function(event){
+					self._$showRecordDiv.load(self.options.url,function(){
+						var $showRecordForm = self._$showRecordDiv.find('form');
+			            self._trigger("formCreated", null, { form: $showRecordForm});
+					});
+				}
+			});
+			self._$showRecordDiv.dialog("open");
         },
 
         /* Saves new added record to the server and updates table.

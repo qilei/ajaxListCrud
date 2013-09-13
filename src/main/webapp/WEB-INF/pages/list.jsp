@@ -5,6 +5,11 @@
 <!DOCTYPE html>
 <html>
 <jsp:include page="../fragments/headTag.jsp"/>
+<style type="text/css">
+.errorMsg {
+	color: red;
+}
+</style>
 <body>
 	<c:url var="listUrl" value="/contact/list" />
 	<c:url var="addUrl" value="/contact/add" />
@@ -14,6 +19,7 @@
 	<button id="btnAdd">新增</button>
 	<button id="btnEdit" disabled="disabled">修改</button>
 	<button id="btnDel" disabled="disabled">删除</button>
+	<button id="btnShow" disabled="disabled">查看</button>
 	</div>
 	<div id="ContactTableContainer"></div>
 	<div id="dialog" title="通讯录编辑">
@@ -66,9 +72,10 @@
                 if ($selectedRows.length > 0) {
                 	initBtnEdit();
                 	initBtnDel();
-                	$("#btnEdit,#btnDel").attr("disabled",false);
+                	initBtnShow();
+                	$("#btnEdit,#btnDel,#btnShow").attr("disabled",false);
                 }else{
-                	$("#btnEdit,#btnDel").attr("disabled",true);
+                	$("#btnEdit,#btnDel,#btnShow").attr("disabled",true);
                 }
             }
         });
@@ -120,6 +127,13 @@
 			recordDeleted:function(){
 				$('#ContactTableContainer').jtable('reload');
 			}
+		});
+    }
+    
+    function initBtnShow(){
+		$("#btnShow").crud({
+			action:"show",
+			url:"${editUrl}"+"?id="+$('#ContactTableContainer').jtable('selectedRows').first().data("record").id,
 		});
     }
 
