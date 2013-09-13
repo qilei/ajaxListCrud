@@ -38,10 +38,12 @@
 				self._createAddRecordDialogDiv();
 				self.element.click(function(e){
 					self._showAddRecordForm();
+					e.preventDefault();
 				});
 			}else{
 				self.element.click(function(e){
 					self._deleteRecord();
+					e.preventDefault();
 				});
 			}
 		},
@@ -134,7 +136,6 @@
 					});
             	}
 				e.preventDefault();
-				return false;
 			});
         },
         _deleteRecord : function(){
